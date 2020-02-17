@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -12,6 +13,7 @@ import in.slanglabs.platform.SlangBuddyOptions;
 import in.slanglabs.platform.SlangLocale;
 import in.slanglabs.platform.SlangSession;
 import in.slanglabs.platform.action.SlangUtteranceAction;
+import in.slanglabs.platform.prompt.SlangMessage;
 
 public class SlangInterface {
     private static final String TAG = "SlangInterface";
@@ -63,6 +65,20 @@ public class SlangInterface {
         SlangBuddy.getBuiltinUI().show(activity);
     }
 
+    public static void notifyUser(final String text) {
+        try {
+            SlangBuddy.notifyUser(
+                    new SlangMessage(
+                            new ArrayList<String>() {
+                                { add(text); }
+                            }
+                    )
+            );
+        } catch (SlangBuddy.UninitializedUsageException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static class BuddyListener implements SlangBuddy.Listener {
         @Override
         public void onInitialized() {
@@ -71,6 +87,7 @@ public class SlangInterface {
                 SlangBuddy.registerIntentAction("slang_help", null);
                 SlangBuddy.getBuiltinUI().disableOnboarding();
                 SlangBuddy.getBuiltinUI().disableHelpWindowOnTimeout();
+                SlangBuddy.getBuiltinUI().setIsDraggable(false);
             } catch (SlangBuddy.InvalidIntentException e) {
                 e.printStackTrace();
             } catch (SlangBuddy.UninitializedUsageException e) {

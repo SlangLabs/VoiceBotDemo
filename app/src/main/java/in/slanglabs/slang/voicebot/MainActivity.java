@@ -1,10 +1,9 @@
 package in.slanglabs.slang.voicebot;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import in.slanglabs.platform.SlangLocale;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +31,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onAction(String spokenText, String englishText) {
                         TextView resultView = findViewById(R.id.result);
                         resultView.setText(spokenText + ":" + englishText);
+
+                        //To speak out prompt to user.
+                        SlangInterface.notifyUser("Please find the original and translated text on your screen");
                     }
 
                     @Override
                     public void onError(String errorMessage) {
                         Toast.makeText(MainActivity.this, "Error:" + errorMessage, Toast.LENGTH_LONG).show();
                     }
-                });
+                }
+        );
     }
 }
